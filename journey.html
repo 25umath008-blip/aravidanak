@@ -105,15 +105,27 @@
 <body>
   <div class="container">
     <header class="hero">
-      <div class="video-wrap" aria-hidden="false">
-        <video title="Distance Between Us" controls muted loop width="600" poster="first-frame.jpg" aria-label="Map of our journey"
-          <source src="map.mp4" type="video/mp4">
-          Your browser does not support the video tag.
-        </video>
-        <div class="caption">Distance Between Us</div>
-      </div>
-      <p style="max-width:720px;text-align:center;color:var(--muted);margin:8px 0 0;font-size:15px">A little map, a lot of us — follow the stops, the dates, and the letter waiting at the end.</p>
-    </header>
+  <div class="video-wrap" aria-hidden="false">
+    <video
+      title="Distance Between Us"
+      controls
+      muted
+      loop
+      width="600"
+      poster="first-frame.jpg"
+      aria-label="Map of our journey"
+    >
+      <source src="map.mp4" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
+    <div class="caption">Distance Between Us</div>
+  </div>
+
+  <p style="max-width:720px;text-align:center;color:var(--muted);margin:8px 0;font-size:15px">
+    A little map, a lot of us — follow the stops, the dates, and the letter waiting at the end.
+  </p>
+</header>
+
 
     <section class="section">
       <h2 class="section-title">Stops Along the Way</h2>
@@ -200,12 +212,20 @@
     // Envelope interaction
     (function(){
       const env = document.getElementById('envelope');
-      env.addEventListener('click', ()=>{
-        const isOpen = env.classList.toggle('open');
-        env.setAttribute('aria-pressed', String(isOpen));
-        // notify other code about the toggle so music can react reliably
-        env.dispatchEvent(new CustomEvent('envelope-toggle', { detail: { open: isOpen } }));
-      });
+        const audio = document.getElementById('bg-audio');
+
+     env.addEventListener('click', () => {
+  const isOpen = env.classList.toggle('open');
+  env.setAttribute('aria-pressed', String(isOpen));
+
+  if (isOpen) {
+    audio.play().catch(() => {});
+  } else {
+    audio.pause();
+    audio.currentTime = 0;
+  }
+});
+
       // Accessibility: open with Enter/Space
       env.addEventListener('keydown', (e)=>{
         if(e.key==='Enter' || e.key===' '){ e.preventDefault(); env.click(); }
