@@ -21,10 +21,32 @@
     .container{max-width:1100px;margin:32px auto;padding:24px}
 
     /* HERO */
-    .hero{display:flex;flex-direction:column;gap:18px;align-items:center}
-    .video-wrap{position:relative;border:6px solid rgba(255,255,255,0.04);border-radius:12px;overflow:hidden;box-shadow:var(--card-shadow);padding:6px;background:linear-gradient(180deg,rgba(10,10,10,0.6),rgba(6,6,6,0.2));animation:heartbeat 2.8s ease-in-out infinite}
+    .hero{
+  display:flex;
+  flex-direction:column;
+  gap:18px;
+  align-items:center;
+}
+
+    .video-wrap{
+  position:relative;
+  width:100%;
+  height:420px; /* HEIGHT GOES HERE */
+  border:6px solid rgba(255,255,255,0.04);
+  border-radius:12px;
+  overflow:hidden;
+  box-shadow:var(--card-shadow);
+  padding:6px;
+  background:linear-gradient(180deg,rgba(10,10,10,0.6),rgba(6,6,6,0.6));
+}
     @keyframes heartbeat{0%{transform:scale(1)}30%{transform:scale(1.02)}40%{transform:scale(1)}60%{transform:scale(1.01)}100%{transform:scale(1)}}
-    .video-wrap video{display:block;width:100%;height:420px;object-fit:cover;border-radius:6px}
+    .video-wrap video{
+  display:block;
+  width:100%;
+  height:100%; /* FILL THE WRAPPER */
+  object-fit:cover;
+  border-radius:6px;
+}
     .caption{position:absolute;left:18px;bottom:14px;background:linear-gradient(90deg,var(--love),var(--accent));padding:10px 14px;border-radius:8px;font-family:'Playfair Display',serif;color:var(--text);box-shadow:0 6px 18px rgba(0,0,0,0.6)}
 
     /* GALLERY */
