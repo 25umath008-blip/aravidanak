@@ -214,17 +214,23 @@
       const env = document.getElementById('envelope');
         const audio = document.getElementById('bg-audio');
 
-     env.addEventListener('click', () => {
+    env.addEventListener('click', () => {
   const isOpen = env.classList.toggle('open');
   env.setAttribute('aria-pressed', String(isOpen));
 
   if (isOpen) {
+    audio.currentTime = 131;   // start at 02:11
     audio.play().catch(() => {});
+
+    // stop at 02:25
+    setTimeout(() => {
+      audio.pause();
+    }, 14000); // 14 seconds
   } else {
     audio.pause();
-    audio.currentTime = 0;
   }
 });
+
 
       // Accessibility: open with Enter/Space
       env.addEventListener('keydown', (e)=>{
