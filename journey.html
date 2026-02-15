@@ -1,0 +1,558 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Distance Between Us</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Lora:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#000000;
+      --text:#f5f5f5;
+      --accent:#0077b6; /* metallic car blue */
+      --love:#c62828;   /* deep love red */
+      --muted:#9a9a9a;
+      --card-bg:#0f0f0f;
+      --card-shadow: 0 12px 36px rgba(0,0,0,0.6);
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:'Lora',serif;background:linear-gradient(180deg,var(--bg),#070707);color:var(--text);-webkit-font-smoothing:antialiased}
+    .container{max-width:1100px;margin:32px auto;padding:24px}
+
+    /* HERO */
+    .hero{display:flex;flex-direction:column;gap:18px;align-items:center}
+    .video-wrap{position:relative;border:6px solid rgba(255,255,255,0.04);border-radius:12px;overflow:hidden;box-shadow:var(--card-shadow);padding:6px;background:linear-gradient(180deg,rgba(10,10,10,0.6),rgba(6,6,6,0.2));animation:heartbeat 2.8s ease-in-out infinite}
+    @keyframes heartbeat{0%{transform:scale(1)}30%{transform:scale(1.02)}40%{transform:scale(1)}60%{transform:scale(1.01)}100%{transform:scale(1)}}
+    .video-wrap video{display:block;width:100%;height:420px;object-fit:cover;border-radius:6px}
+    .caption{position:absolute;left:18px;bottom:14px;background:linear-gradient(90deg,var(--love),var(--accent));padding:10px 14px;border-radius:8px;font-family:'Playfair Display',serif;color:var(--text);box-shadow:0 6px 18px rgba(0,0,0,0.6)}
+
+    /* GALLERY */
+    .section{margin-top:38px}
+    h2.section-title{font-family:'Playfair Display',serif;margin:0 0 12px 0;color:var(--love)}
+    .gallery{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+    .polaroid{background:var(--card-bg);padding:12px;border-radius:8px;box-shadow:var(--card-shadow);position:relative;transform-origin:center;transition:transform .28s ease,box-shadow .28s ease;cursor:pointer}
+    .polaroid img{display:block;width:100%;height:200px;object-fit:cover;border-radius:6px}
+    .polaroid .tag{position:absolute;left:12px;bottom:10px;background:rgba(255,255,255,0.04);padding:6px 10px;border-radius:6px;font-size:13px;color:var(--text);box-shadow:0 2px 8px rgba(0,0,0,0.4)}
+    .polaroid:hover{transform:scale(1.03);box-shadow:0 16px 40px rgba(0,0,0,0.14)}
+
+    /* TIMELINE */
+    .timeline{position:relative;margin-left:18px;padding-left:26px;border-left:3px dashed rgba(0,0,0,0.06)}
+    .tl-item{position:relative;padding:18px 18px 18px 24px;margin-bottom:18px;background:linear-gradient(180deg,rgba(12,12,12,0.6),#0f0f0f);border-radius:10px;box-shadow:var(--card-shadow)}
+    .tl-item::before{content:'❤';position:absolute;left:-46px;top:18px;background:var(--love);color:white;width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;box-shadow:0 6px 16px rgba(0,0,0,0.6)}
+    .tl-item .date{font-size:13px;color:var(--muted);margin-bottom:6px}
+    .tl-item .title{font-weight:700;color:var(--accent)}
+
+    /* MESSAGE IN A BOTTLE / ENVELOPE */
+    .bottle-wrap{display:flex;justify-content:center;margin-top:30px}
+    .envelope{width:320px;height:200px;background:linear-gradient(180deg,#0b0b0b,#0f0f10);border-radius:10px;position:relative;box-shadow:var(--card-shadow);cursor:pointer;transition:transform .28s ease}
+    .envelope .flap{position:absolute;left:0;right:0;top:0;height:60%;background:linear-gradient(180deg,var(--love),var(--accent));clip-path:polygon(0 0,50% 60%,100% 0,100% 100%,0 100%);transform-origin:top center;transition:transform .6s cubic-bezier(.2,.9,.2,1)}
+    .envelope.open .flap{transform:rotateX(180deg) translateY(-20%);box-shadow:none}
+    .letter{position:absolute;left:12px;right:12px;top:18%;bottom:12px;background:linear-gradient(180deg,#0b0b0b,#131313);border-radius:6px;padding:18px;overflow:auto;opacity:0;transform:translateY(10px);transition:opacity .5s ease,transform .5s ease;color:var(--text)}
+    .envelope.open .letter{opacity:1;transform:translateY(0)}
+    .open-hint{margin-top:10px;text-align:center;color:var(--muted);font-size:13px}
+
+    /* Responsive */
+    @media (max-width:900px){
+      .gallery{grid-template-columns:repeat(2,1fr)}
+      .video-wrap video{height:320px}
+    }
+    @media (max-width:560px){
+      .gallery{grid-template-columns:1fr}
+      .container{padding:14px;margin:18px auto}
+      .video-wrap video{height:220px}
+      .envelope{width:90%}
+      .timeline{margin-left:8px}
+    }
+    /* Slideshow / carousel for large photo set */
+    .slideshow{position:relative;display:flex;align-items:center;gap:12px;justify-content:center;margin-top:18px}
+    .slide-wrap{max-width:860px;width:100%;display:flex;align-items:center;justify-content:center}
+    .slides{position:relative;width:100%;height:480px;background:linear-gradient(180deg,#050505,#0b0b0b);border-radius:10px;display:flex;align-items:center;justify-content:center;overflow:hidden}
+    .slides img{max-width:100%;max-height:100%;display:block;margin:0 auto}
+    .slide-btn{background:rgba(255,255,255,0.9);border:none;padding:10px 14px;border-radius:8px;cursor:pointer;font-size:26px;box-shadow:0 8px 20px rgba(0,0,0,0.08)}
+    .slide-index{position:relative;text-align:center;color:var(--muted);font-size:14px;margin-top:8px}
+    .romantic-caption{margin-top:8px;text-align:center;color:#5a5a5a;font-size:15px;font-style:italic}
+    @media (max-width:900px){ .slides{height:360px} }
+    @media (max-width:560px){ .slides{height:260px} .slide-btn{padding:8px 10px} }
+    /* Ambient floating hearts / bokeh */
+    .ambient-overlay{position:fixed;inset:0;pointer-events:none;z-index:9000;overflow:hidden}
+    .ambient-heart{position:absolute;display:block;width:32px;height:32px;opacity:0.95;transform:translateY(0) rotate(0deg);will-change:transform,opacity;filter:drop-shadow(0 10px 30px rgba(255,50,90,0.45))}
+    .ambient-heart img{width:100%;height:100%;display:block}
+    @keyframes floatUp{0%{transform:translateY(120vh) scale(0.6);opacity:0}8%{opacity:1}100%{transform:translateY(-30vh) scale(1.05);opacity:0}}
+
+    /* Love timeline (horizontal) */
+    .timeline{display:flex;gap:18px;overflow-x:auto;padding:18px 12px;border-left:0;border-top:3px dashed rgba(255,255,255,0.04);background:linear-gradient(90deg, rgba(0,0,0,0.02), transparent);scroll-snap-type:x mandatory}
+    .tl-item{flex:0 0 300px;scroll-snap-align:center;min-width:260px;max-width:320px;position:relative;padding:16px;border-radius:12px;background:linear-gradient(180deg,rgba(18,18,18,0.8),#0c0c0c);box-shadow:var(--card-shadow);display:flex;flex-direction:column;gap:10px}
+    .tl-item .photo{width:100%;height:160px;object-fit:cover;border-radius:8px}
+    .tl-item .meta{display:flex;justify-content:space-between;align-items:center;gap:8px}
+    .tl-audio-btn{background:linear-gradient(90deg,var(--accent),var(--love));border:none;color:var(--text);padding:6px 10px;border-radius:8px;cursor:pointer}
+    .tl-item .date{font-size:12px;color:var(--muted)}
+    .tl-item .title{font-size:16px;color:var(--text)}
+    /* Quiz styles */
+    .quiz-card{margin-top:18px;background:linear-gradient(180deg,rgba(12,12,12,0.6),#0b0b0b);padding:18px;border-radius:12px;box-shadow:var(--card-shadow);max-width:860px}
+    .quiz-question{font-size:18px;margin-bottom:12px;color:var(--text);font-weight:600}
+    .choices{display:flex;flex-direction:column;gap:8px}
+    .choice{background:linear-gradient(90deg,rgba(255,255,255,0.04),rgba(255,255,255,0.02));border:1px solid rgba(255,255,255,0.03);padding:10px 12px;border-radius:8px;color:var(--text);cursor:pointer;text-align:left}
+    .choice.correct{outline:3px solid rgba(0,200,120,0.18);box-shadow:0 8px 20px rgba(0,200,120,0.06)}
+    .choice.wrong{opacity:0.65;filter:grayscale(0.2)}
+    .quiz-controls{margin-top:12px;display:flex;gap:8px}
+    .quiz-results{padding:12px}
+    .heart-counter{margin-top:8px;color:var(--love);font-weight:700}
+    .small-heart{margin-left:6px;color:var(--love);font-size:18px}
+    .quiz-award{pointer-events:none;z-index:10001}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header class="hero">
+      <div class="video-wrap" aria-hidden="false">
+        <video title="Distance Between Us" autoplay muted loop playsinline preload="metadata" poster="first-frame.jpg" aria-label="Map of our journey">
+          <source src="map.webm" type="video/webm">
+          <source src="map.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+        <div class="caption">Distance Between Us</div>
+      </div>
+      <p style="max-width:720px;text-align:center;color:var(--muted);margin:8px 0 0;font-size:15px">A little map, a lot of us — follow the stops, the dates, and the letter waiting at the end.</p>
+    </header>
+
+    <section class="section">
+      <h2 class="section-title">Stops Along the Way</h2>
+      <div class="gallery">
+        
+          <figure class="polaroid"><img src="polaroids/polaroid%205.jpeg" alt="Polaroid 5"><figcaption class="tag">Unake theriyama na edutha first photo</figcaption></figure>
+          <figure class="polaroid"><img src="polaroids/polaroid%202.jpeg" alt="Polaroid 2"><figcaption class="tag">Enaku kedacha first photo</figcaption></figure>
+          <figure class="polaroid"><img src="polaroids/polaroid%204.jpeg" alt="Polaroid 4"><figcaption class="tag">My all time fav</figcaption></figure>
+          <figure class="polaroid"><img src="polaroids/polaroid%203.jpeg" alt="Polaroid 3"><figcaption class="tag">En azhagu kutty</figcaption></figure>
+          <figure class="polaroid"><img src="polaroids/polaroid%201.jpeg" alt="Polaroid 1"><figcaption class="tag">My cutie pie</figcaption></figure>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2 class="section-title">Timeline</h2>
+      <div class="timeline">
+        <div class="tl-item"><div class="date">May 25, 2023 5:37 pm</div><div class="title">First meet</div><div class="desc">En life la nee oru imp ah na person ah irupa nu anaiku theriyathu but you are the best thing ever happened to me.</div></div>
+        <div class="tl-item"><div class="date">Dec 28, 2023 7:10 pm</div><div class="title">I proposed you</div><div class="desc">Naa expect panna maathiri pogala still got some memories..</div></div>
+    
+
+      </div>
+    </section>
+
+    <section class="section" id="romantic-gallery">
+      <h2 class="section-title">Unnai Patriya En Iniya Ninaivugal</h2>
+      <div class="romantic-caption">A collection of moments — for you, with all my love.</div>
+      <div class="slideshow" aria-live="polite">
+        <button class="slide-btn prev" aria-label="Previous">‹</button>
+        <div class="slide-wrap"><div class="slides" id="slides"></div></div>
+        <button class="slide-btn next" aria-label="Next">›</button>
+      </div>
+      <div class="slide-index" id="slide-index">0 / 0</div>
+    </section>
+
+    <!-- Love Quiz Section -->
+    <section class="section" id="love-quiz" aria-labelledby="love-quiz-title">
+      <h2 id="love-quiz-title">Love Quiz</h2>
+      <p class="muted">Answer a few questions about us — earn hearts for each correct answer.</p>
+
+      <div class="quiz-card">
+        <div id="quiz-ui">
+          <div id="quiz-question" class="quiz-question">Loading...</div>
+          <div id="quiz-choices" class="choices"></div>
+          <div class="quiz-controls">
+            <button id="quiz-next" class="btn" disabled>Next</button>
+            <button id="quiz-restart" class="btn" style="display:none;">Retry</button>
+          </div>
+        </div>
+
+        <div id="quiz-results" class="quiz-results" aria-live="polite" style="display:none;">
+          <div class="result-text"></div>
+          <div class="heart-counter" aria-hidden="false">Hearts: <span id="heart-count">0</span> <span class="hearts-inline" id="hearts-inline"></span></div>
+          <button id="quiz-close" class="btn">Close</button>
+        </div>
+      </div>
+    </section>
+
+    
+
+    <section class="section">
+      <h2 class="section-title">Message in a Bottle</h2>
+      <div class="bottle-wrap">
+        <div class="envelope" id="envelope" role="button" aria-pressed="false" tabindex="0">
+          <div class="flap"></div>
+          <div class="letter" id="letter">
+            <h3 style="margin-top:0;font-family:'Playfair Display',serif;color:var(--love)">To the one who holds my map,</h3>
+            <p style="line-height:1.6;color:var(--muted)">Dearest Aru, epdi iruka? I miss you a lot. Namakula irukura thooram enaku pudikala. Enaku unkudavae irukanum pola iruku — unna paathutae irukanum. Unaku pudicha vishayam ellam unaku kudukanum.</p>
+            <p style="line-height:1.6;color:var(--muted)">Unna hug pannanum... tighttt ahh hug pannanum... ithellam nadakum ahh?. I love you so much. And Happy Valentine's Day.</p>
+            <p style="text-align:right;margin:12px 0 0;color:var(--muted)">— Chandana</p>
+          </div>
+        </div>
+      </div>
+      <div class="open-hint">Tap the envelope to open the letter</div>
+      <!-- Background audio (place your song as song.mp3 next to journey.html) -->
+      <audio id="bg-audio" preload="auto">
+        <source src="song.mp3" type="audio/mpeg">
+        Your browser does not support audio.
+      </audio>
+    </section>
+
+  </div>
+
+  <script>
+    // Envelope interaction
+    (function(){
+      const env = document.getElementById('envelope');
+      env.addEventListener('click', ()=>{
+        const isOpen = env.classList.toggle('open');
+        env.setAttribute('aria-pressed', String(isOpen));
+        // notify other code about the toggle so music can react reliably
+        env.dispatchEvent(new CustomEvent('envelope-toggle', { detail: { open: isOpen } }));
+      });
+      // Accessibility: open with Enter/Space
+      env.addEventListener('keydown', (e)=>{
+        if(e.key==='Enter' || e.key===' '){ e.preventDefault(); env.click(); }
+      });
+    })();
+
+
+    // Ambient effects: floating hearts
+    (function(){
+      const overlay = document.createElement('div');
+      overlay.className = 'ambient-overlay';
+      document.body.appendChild(overlay);
+
+      function spawnHeart(){
+        const el = document.createElement('div');
+        el.className = 'ambient-heart';
+        // brighter heart gradient
+        el.innerHTML = '<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="g" x1="0" x2="1"><stop offset="0" stop-color="#ff8a80"/><stop offset="1" stop-color="#ff1744"/></linearGradient></defs><path d="M12 21s-7-4.35-9.07-6.36C.61 12.86.5 9.76 2.79 7.8 5.08 5.85 8.14 6.05 10 7.94c.96.98 1.5 1.5 2 1.5s1.04-.52 2-1.5c1.86-1.89 4.92-2.09 7.21-.14 2.29 1.96 2.18 5.06-0.14 7.84C19 16.66 12 21 12 21z" fill="url(#g)"/></svg>';
+        const w = 18 + Math.random()*40; // larger
+        el.style.width = w + 'px';
+        el.style.left = (Math.random()*100) + '%';
+        el.style.bottom = '-8vh';
+        el.style.opacity = (0.85 + Math.random()*0.15).toFixed(2);
+        el.style.transform = `translateY(0) rotate(${Math.floor(Math.random()*30-15)}deg)`;
+        el.style.filter = 'drop-shadow(0 12px 36px rgba(255,60,100,0.55))';
+        overlay.appendChild(el);
+        const dur = 7000 + Math.random()*6000;
+        el.style.animation = `floatUp ${dur}ms cubic-bezier(.2,.9,.2,1) forwards`;
+        // remove after animation
+        setTimeout(()=> el.remove(), dur + 200);
+      }
+      // spawn more frequently for denser visible hearts
+      setInterval(spawnHeart, 600);
+    })();
+
+    // Love timeline enhancements: support data-photo and data-audio attributes
+    (function(){
+      document.querySelectorAll('.timeline .tl-item').forEach((item, idx)=>{
+        // photo
+        const photo = item.getAttribute('data-photo');
+        if(photo){
+          const img = document.createElement('img');
+          img.src = photo;
+          img.className = 'photo';
+          item.insertBefore(img, item.firstChild);
+        }
+        // audio
+        const audioSrc = item.getAttribute('data-audio');
+        if(audioSrc){
+          const audio = document.createElement('audio');
+          audio.src = audioSrc;
+          audio.preload = 'none';
+          item.appendChild(audio);
+          const btn = document.createElement('button');
+          btn.className = 'tl-audio-btn';
+          btn.textContent = 'Play clip';
+          btn.addEventListener('click', ()=>{
+            if(audio.paused){
+              // pause others
+              document.querySelectorAll('.timeline audio').forEach(a=>{ if(a!==audio) a.pause(); });
+              audio.currentTime = 0;
+              audio.play();
+              btn.textContent = 'Pause';
+              audio.onended = ()=> btn.textContent = 'Play clip';
+            }else{ audio.pause(); btn.textContent = 'Play clip'; }
+          });
+          const meta = item.querySelector('.meta');
+          if(meta) meta.appendChild(btn); else item.appendChild(btn);
+        }
+      });
+    })();
+
+    // Autoplay hint: ensure muted autoplay (browsers require muted)
+    document.addEventListener('DOMContentLoaded', ()=>{
+      const v = document.querySelector('video');
+      if(v){
+        v.muted = true; // ensures autoplay works
+        const playPromise = v.play();
+        if(playPromise!==undefined){
+          playPromise.catch(()=>{/* ignored */});
+        }
+      }
+    });
+
+    // Lightbox for polaroids
+    (function(){
+      // create lightbox elements
+      const lb = document.createElement('div');
+      lb.id = 'lightbox';
+      lb.className = 'lightbox';
+      lb.innerHTML = `
+        <div class="lightbox-inner" role="dialog" aria-modal="true" aria-hidden="true">
+          <button class="lightbox-close" aria-label="Close">×</button>
+          <img id="lightbox-img" src="" alt="">
+          <div id="lightbox-caption" class="lightbox-caption"></div>
+        </div>`;
+      document.body.appendChild(lb);
+
+      const styles = document.createElement('style');
+      styles.textContent = `
+        .lightbox{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,0.85);z-index:9999;padding:24px}
+        .lightbox[aria-hidden="false"]{display:flex}
+        .lightbox-inner{position:relative;max-width:92%;max-height:92%;display:flex;flex-direction:column;gap:12px;align-items:center}
+        .lightbox img{max-width:100%;max-height:80vh;border-radius:8px;box-shadow:0 18px 48px rgba(0,0,0,0.8)}
+        .lightbox-caption{background:rgba(12,12,12,0.9);padding:8px 12px;border-radius:8px;color:var(--text);max-width:100%;text-align:center}
+        .lightbox-close{position:absolute;right:-8px;top:-8px;background:rgba(12,12,12,0.9);color:var(--text);border-radius:50%;border:none;width:40px;height:40px;font-size:20px;cursor:pointer;box-shadow:0 8px 24px rgba(0,0,0,0.6)}
+      `;
+      document.head.appendChild(styles);
+
+      const lightbox = document.getElementById('lightbox');
+      const lightboxImg = document.getElementById('lightbox-img');
+      const lightboxCaption = document.getElementById('lightbox-caption');
+      const closeBtn = lightbox.querySelector('.lightbox-close');
+
+      function open(src, caption, alt){
+        lightboxImg.src = src;
+        lightboxImg.alt = alt || '';
+        lightboxCaption.textContent = caption || '';
+        lightbox.setAttribute('aria-hidden','false');
+      }
+      function close(){
+        lightbox.setAttribute('aria-hidden','true');
+        lightboxImg.src = '';
+      }
+
+      // attach click handlers
+      document.querySelectorAll('.polaroid').forEach(fig=>{
+        const img = fig.querySelector('img');
+        const caption = fig.querySelector('.tag') ? fig.querySelector('.tag').textContent : '';
+        fig.addEventListener('click', ()=> open(img.src, caption, img.alt));
+        img.addEventListener('keydown', (e)=>{ if(e.key==='Enter') open(img.src, caption, img.alt); });
+      });
+
+      // close interactions
+      closeBtn.addEventListener('click', close);
+      lightbox.addEventListener('click', (e)=>{ if(e.target===lightbox) close(); });
+      document.addEventListener('keydown', (e)=>{ if(e.key==='Escape') close(); });
+    })();
+
+    // Slideshow loader that uses existing filenames in images/ (image (1).JPG ... image (219).JPG)
+    (function(){
+      const folder = 'images';
+      const maxCount = 219;
+      const slidesEl = document.getElementById('slides');
+      const indexEl = document.getElementById('slide-index');
+      const prevBtn = document.querySelector('.slide-btn.prev');
+      const nextBtn = document.querySelector('.slide-btn.next');
+      let slideNodes = [];
+      let current = 0;
+
+      function makeSlide(src, alt){
+        const img = document.createElement('img');
+        img.src = src;
+        img.alt = alt || '';
+        img.loading = 'lazy';
+        const wrap = document.createElement('div');
+        wrap.style.width = '100%';
+        wrap.style.height = '100%';
+        wrap.style.display = 'flex';
+        wrap.style.alignItems = 'center';
+        wrap.style.justifyContent = 'center';
+        wrap.appendChild(img);
+        return wrap;
+      }
+
+      function show(i){
+        if(!slideNodes.length) return;
+        current = (i + slideNodes.length) % slideNodes.length;
+        slidesEl.innerHTML = '';
+        slidesEl.appendChild(slideNodes[current]);
+        indexEl.textContent = `${current+1} / ${slideNodes.length}`;
+      }
+
+      // Probe each expected filename and add only successfully loaded images
+      for(let i=1;i<=maxCount;i++){
+        // normalized filename pattern: image1.jpg, image2.jpg, ... (lowercase, no spaces)
+        const filename = `image${i}.jpg`;
+        // encodeURI ensures any remaining special chars are safely requested on case-sensitive hosts
+        const path = encodeURI(`${folder}/${filename}`);
+        const probe = new Image();
+        probe.onload = (function(p, idx){
+          return function(){
+            const slide = makeSlide(p, `Photo ${idx}`);
+            slideNodes.push(slide);
+            if(slideNodes.length===1) show(0);
+          };
+        })(path, i);
+        probe.onerror = function(){ /* missing file, ignore */ };
+        probe.src = path;
+      }
+
+      // If nothing loads after a short delay, show a message
+      setTimeout(()=>{
+        if(!slideNodes.length){
+          slidesEl.textContent = 'No images found in the folder. Ensure images are named "image (1).JPG"…"image (219).JPG" inside the images/ folder.';
+          indexEl.textContent = '0 / 0';
+        }
+      }, 1200);
+
+      prevBtn.addEventListener('click', ()=> show(current-1));
+      nextBtn.addEventListener('click', ()=> show(current+1));
+      document.addEventListener('keydown', (e)=>{ if(e.key==='ArrowLeft') prevBtn.click(); if(e.key==='ArrowRight') nextBtn.click(); });
+    })();
+
+    // Love Quiz implementation
+    (function(){
+      const questions = [
+        { q: 'Out of the three option, select the one I can\'t live without.', choices: ['YOU','plushie','Ice cream'], a: 0 },
+        { q: 'What nickname would you give me?', choices: ['Kannu kutty','Chellam','Papa'], a: 0 },
+        { q: 'What do I love the most in this World?', choices: ['YOU','Friends','Travel'], a: 0 }
+      ];
+
+      let idx = 0, hearts = 0;
+      const qEl = document.getElementById('quiz-question');
+      const choicesEl = document.getElementById('quiz-choices');
+      const nextBtn = document.getElementById('quiz-next');
+      const restartBtn = document.getElementById('quiz-restart');
+      const resultsEl = document.getElementById('quiz-results');
+      const uiEl = document.getElementById('quiz-ui');
+      const heartCountEl = document.getElementById('heart-count');
+      const heartsInline = document.getElementById('hearts-inline');
+      const closeBtn = document.getElementById('quiz-close');
+
+      function renderQuestion(i){
+        const Q = questions[i];
+        qEl.textContent = Q.q;
+        choicesEl.innerHTML = '';
+        Q.choices.forEach((c, ci)=>{
+          const btn = document.createElement('button');
+          btn.className = 'choice'; btn.type = 'button'; btn.textContent = c;
+          btn.addEventListener('click', ()=> onChoose(ci, btn));
+          choicesEl.appendChild(btn);
+        });
+        nextBtn.disabled = true; nextBtn.textContent = 'Next';
+      }
+
+      function onChoose(choiceIndex, btn){
+        const correct = questions[idx].a === choiceIndex;
+        Array.from(choicesEl.children).forEach(b=> b.disabled = true);
+        btn.classList.add(correct? 'correct' : 'wrong');
+        if(correct){ hearts += 1; heartCountEl.textContent = hearts; awardHeart(); }
+        nextBtn.disabled = false;
+        if(idx === questions.length -1) nextBtn.textContent = 'Finish';
+      }
+
+      nextBtn.addEventListener('click', ()=>{
+        idx +=1;
+        if(idx < questions.length) renderQuestion(idx); else showResults();
+      });
+
+      restartBtn.addEventListener('click', ()=>{
+        idx=0; hearts=0; heartCountEl.textContent='0'; heartsInline.innerHTML=''; resultsEl.style.display='none'; uiEl.style.display=''; nextBtn.style.display=''; renderQuestion(0);
+      });
+
+      closeBtn.addEventListener('click', ()=>{ resultsEl.style.display='none'; uiEl.style.display=''; idx=0; hearts=0; heartCountEl.textContent='0'; heartsInline.innerHTML=''; renderQuestion(0); });
+
+      function showResults(){
+        uiEl.style.display='none'; resultsEl.style.display=''; const txt = resultsEl.querySelector('.result-text'); txt.innerHTML = `You earned <strong>${hearts}</strong> ${hearts===1? 'heart':'hearts'}!`;
+        heartsInline.innerHTML=''; for(let i=0;i<hearts;i++){ const span=document.createElement('span'); span.className='small-heart'; span.textContent='❤'; heartsInline.appendChild(span); }
+        nextBtn.style.display='none'; restartBtn.style.display='';
+      }
+
+      function awardHeart(){
+        const overlay = document.querySelector('.ambient-overlay') || document.body;
+        const h = document.createElement('div'); h.className='ambient-heart quiz-award';
+        h.innerHTML = '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" d="M12 21s-7-4.35-9-7.27C-0.35 9.5 4.5 4 12 8.5 19.5 4 24.35 9.5 21 13.73 19 16.65 12 21 12 21z"/></svg>';
+        h.style.left = '60%'; h.style.top = '50%'; overlay.appendChild(h); setTimeout(()=> h.remove(), 2200);
+      }
+
+      // initialize
+      renderQuestion(0);
+    })();
+
+    // Background music controls: play from 02:11 (131s) to 02:25 (145s) with soft fade
+    (function(){
+      const audio = document.getElementById('bg-audio');
+      if(!audio) return;
+      let fadeTimer = null;
+      let stopTimer = null;
+
+      function clearTimers(){ if(fadeTimer) { clearInterval(fadeTimer); fadeTimer = null; } if(stopTimer){ clearTimeout(stopTimer); stopTimer = null; } }
+
+      function fadeTo(targetVol, durationMs){
+        clearTimers();
+        const stepMs = 50;
+        const steps = Math.max(1, Math.floor(durationMs / stepMs));
+        const start = audio.volume;
+        const delta = (targetVol - start) / steps;
+        let i = 0;
+        fadeTimer = setInterval(()=>{
+          i++;
+          audio.volume = Math.min(1, Math.max(0, audio.volume + delta));
+          if(i >= steps){ clearTimers(); audio.volume = targetVol; }
+        }, stepMs);
+      }
+
+      function startMusicAt(startSec = 131, playDuration = 14){
+        clearTimers();
+        audio.pause();
+        audio.volume = 0;
+        // try to set time; wait for metadata if needed
+        try{
+          audio.currentTime = startSec;
+        }catch(e){
+          audio.addEventListener('loadedmetadata', ()=>{ try{ audio.currentTime = startSec; }catch(_){} }, { once:true });
+        }
+
+        const playPromise = audio.play();
+        if(playPromise !== undefined){
+          playPromise.catch(()=>{
+            // playback blocked until user gesture — nothing to do (envelope click is a gesture)
+          });
+        }
+
+        // gentle fade in to 0.6 over 1.5s
+        fadeTo(0.6, 1500);
+
+        if(playDuration && playDuration > 0){
+          // schedule fade out 1s before end, then pause
+          const fadeOutMs = 1000;
+          stopTimer = setTimeout(()=>{
+            fadeTo(0, fadeOutMs);
+            setTimeout(()=>{ audio.pause(); }, fadeOutMs + 100);
+          }, (playDuration * 1000) - fadeOutMs);
+        }
+      }
+
+      function stopMusic(){
+        clearTimers();
+        fadeTo(0, 800);
+        setTimeout(()=>{ audio.pause(); }, 900);
+      }
+
+      // Hook to envelope toggle — starts when opened, stops when closed
+      const env = document.getElementById('envelope');
+      if(env){
+        env.addEventListener('envelope-toggle', (ev)=>{
+          const isOpen = ev && ev.detail && ev.detail.open;
+          if(isOpen){
+            // start at 02:11 (131s) and play for 14s (until 02:25)
+            startMusicAt(131, 14);
+          }else{
+            stopMusic();
+          }
+        });
+      }
+    })();
+  </script>
+</body>
+</html>
