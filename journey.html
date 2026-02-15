@@ -108,12 +108,13 @@
   <div class="video-wrap" aria-hidden="false">
    <video
   title="Distance Between Us"
-  autoplay
+  id="map-video"
   muted
-  loop
   playsinline
+  autoplay
+  loop
   preload="auto"
-  poster="first-frame.jpg"
+  poster="images/first-frame.jpg"
   aria-label="Map of our journey"
 >
 
@@ -202,7 +203,7 @@
       </div>
       <div class="open-hint">Tap the envelope to open the letter</div>
       <!-- Background audio (place your song as song.mp3 next to journey.html) -->
-      <audio id="bg-audio" preload="auto">
+      <audio id="bg-audio" preload="metadata">
         <source src="song.mp3" type="audio/mpeg">
         Your browser does not support audio.
       </audio>
@@ -223,12 +224,11 @@
   if (isOpen) {
     audio.currentTime = 131;   // start at 02:11
     audio.play().catch(() => {});
+  }
+    });
 
-    // stop at 02:25
-    setTimeout(() => {
-      audio.pause();
-    }, 14000); // 14 seconds
-  } else {
+    audio.addEventListener('timeupdate', () => {
+  if (audio.currentTime >= 145) { // 02:25
     audio.pause();
   }
 });
